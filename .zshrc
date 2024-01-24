@@ -112,7 +112,7 @@ PATH=/opt/homebrew/opt/openjdk/bin:$PATH
 
 
 # added by compiler tools installer
-COMP362TOOLS="/Users/brian/teaching/compilers/git/comp362-tools"
+COMP362TOOLS="$HOME/teaching/compilers/git/comp362-tools"
 COMP362LAB=lab1
 PATH=$PATH:$COMP362TOOLS/bin
 CLASSPATH=.:..:$COMP362TOOLS/../comp362-$COMP362LAB:$COMP362TOOLS/classes/jlex.jar:$COMP362TOOLS/classes/java_cup.jar:$COMP362TOOLS/classes/$COMP362LAB.jar
