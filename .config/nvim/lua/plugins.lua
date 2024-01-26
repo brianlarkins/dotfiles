@@ -141,6 +141,23 @@ require("lazy").setup({
     lazy = false,
   },
 
+  {
+    "stevearc/oil.nvim",
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require('oil').setup()
+    end,
+  },
+
+  {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig"
+  },
+
+
 
   -- AI overlord
   {
