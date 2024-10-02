@@ -237,6 +237,28 @@ require("lazy").setup({
     end
   },
 
+  {"shellRaining/hlchunk.nvim",
+     event = { "BufReadPre", "BufNewFile" },
+     config = function()
+       require("hlchunk").setup({
+         chunk = {
+           enable = true,
+           use_treesitter = true
+         },
+         line_num = {
+           enable = true,
+           style = "#dfa649",
+         },
+         indent = {
+           enable = false,
+         },
+         blank = {
+           enable = true,
+         },
+       })
+     end
+  },
+
   -- AI overlord
   {
     "github/copilot.vim"

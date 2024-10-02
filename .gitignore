@@ -1,6 +1,6 @@
 .cfg
 [A-Za-z]*
-.config/nvim/lazy-lock.json
+lazy-lock.json
 .DS_Store
 .CFUserTextEncoding
 .bash_history
