@@ -107,14 +107,25 @@ if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
   PATH=/opt/homebrew/opt/ruby/bin:$PATH
 fi
 
-PATH=$PATH:$HOME/bin:/usr/local/smlnj/bin:$HOME/Library/Python/3.9/bin:.
+PATH=$PATH:$HOME/bin:$HOME/opt/bin:/usr/local/smlnj/bin:$HOME/Library/Python/3.9/bin:.
 PATH=/opt/homebrew/opt/openjdk/bin:$PATH
 
 
+
+
+
+
+
+
+
+
 # added by compiler tools installer
-COMP362TOOLS="$HOME/teaching/compilers/git/comp362-tools"
-COMP362LAB=lab1
+COMP362TOOLS="$HOME/teaching/compilers/grading/sp24/comp362-sp24-lab3-submissions/comp362-tools"
+COMP362LAB=lab6
 PATH=$PATH:$COMP362TOOLS/bin
 CLASSPATH=.:..:$COMP362TOOLS/../comp362-$COMP362LAB:$COMP362TOOLS/classes/jlex.jar:$COMP362TOOLS/classes/java_cup.jar:$COMP362TOOLS/classes/$COMP362LAB.jar
 export COMP362TOOLS COMP362LAB PATH CLASSPATH
 # end compilers additions
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+

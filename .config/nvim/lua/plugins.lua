@@ -141,6 +141,7 @@ require("lazy").setup({
     lazy = false,
   },
 
+  -- tree style file finder (:Neotree to open)
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -177,6 +178,7 @@ require("lazy").setup({
     'L3MON4D3/LuaSnip',
   },
 
+  -- Mason config (disabled for now, can't remember why)
 --  {'williamboman/mason.nvim',
 --    depeendencies = { 'williamboamn/mason-lspconfig.nvim', 'nvim-lua/plenary.nvim',},
 --    config = function()
@@ -207,7 +209,9 @@ require("lazy").setup({
 --      }
 --    end
 --  },
+--
 
+  -- in-editor terminal (C-\ to open)
   {"akinsho/toggleterm.nvim", version = "*", 
     config = function()
       require("toggleterm").setup {
@@ -237,13 +241,15 @@ require("lazy").setup({
     end
   },
 
+  -- highlight graphics for spaces and block structure in programs
   {"shellRaining/hlchunk.nvim",
      event = { "BufReadPre", "BufNewFile" },
      config = function()
        require("hlchunk").setup({
          chunk = {
            enable = true,
-           use_treesitter = true
+           use_treesitter = true,
+           delay = 0,
          },
          line_num = {
            enable = true,
@@ -257,6 +263,30 @@ require("lazy").setup({
          },
        })
      end
+  },
+
+  -- accelerate scrolling
+  {
+    "karb94/neoscroll.nvim",
+    config = function ()
+      require('neoscroll').setup({})
+    end
+  },
+
+  -- pretty tabs 
+  {'romgrk/barbar.nvim',
+    dependencies = {
+      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+      'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+    },
+    init = function() vim.g.barbar_auto_setup = false end,
+    opts = {
+      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+      -- animation = true,
+      -- insert_at_start = true,
+      -- …etc.
+    },
+    version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
 
   -- AI overlord
