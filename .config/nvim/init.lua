@@ -1,4 +1,4 @@
-require("options")
-require("plugins")
-require("lsp_setup")
-require("keymap")
+require("config.options")
+require("config.lazy")
+require("config.lsp")
+require("config.keymap")

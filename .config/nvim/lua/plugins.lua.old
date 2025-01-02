@@ -152,17 +152,6 @@ require("lazy").setup({
       -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     }
   },
-  -- {
-  --   "stevearc/oil.nvim",
-  --   opts = {},
-  --   -- Optional dependencies
-  --   dependencies = { "nvim-tree/nvim-web-devicons" },
-  --   config = function()
-  --     require('oil').setup()
-  --   end,
-  -- },
-
-
 
   -- LSP / Neovim / Mason config
   {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
@@ -177,39 +166,6 @@ require("lazy").setup({
     'hrsh7th/cmp-nvim-lua',
     'L3MON4D3/LuaSnip',
   },
-
-  -- Mason config (disabled for now, can't remember why)
---  {'williamboman/mason.nvim',
---    depeendencies = { 'williamboamn/mason-lspconfig.nvim', 'nvim-lua/plenary.nvim',},
---    config = function()
---      local lsp = require("lsp-zero")
---      lsp.preset("recommended")
---
---      require('lsp-zero').setup()
---      require('mason').setup()
---
---      require "mason-lspconfig".setup() {
---        ensure_installed = {
---          "bashls",
---          "clangd",
---          "cmake",
---          "cssls",
---          "dockerls",
---          "gopls",
---          "html",
---          "jsonls",
---          "pyright",
---          "rust_analyzer",
---          "sumneko_lua",
---          "tsserver",
---          "vimls",
---          "yamlls",
---        },
---        auto_install = true,
---      }
---    end
---  },
---
 
   -- in-editor terminal (C-\ to open)
   {"akinsho/toggleterm.nvim", version = "*", 

@@ -1,0 +1,13 @@
+LSP config:
+  language servers
+    ansible-ls
+    bashls
+    clangd
+      - has a text file option for compiler
+      - look at format on save
+    gopls
+    jdtls
+    ltex_plus
+    lua_ls
+    rls
+

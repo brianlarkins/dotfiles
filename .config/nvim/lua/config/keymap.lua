@@ -1,15 +1,32 @@
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
+local set = vim.keymap.set
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
+set('n', '<leader>ff', builtin.find_files, {})
+set('n', '<leader>fg', builtin.live_grep, {})
+set('n', '<leader>fb', builtin.buffers, {})
+set('n', '<leader>fh', builtin.help_tags, {})
+
+-- Move between windows
+set("n", "<c-j>", "<c-w><c-j>")
+set("n", "<c-k>", "<c-w><c-k>")
+set("n", "<c-l>", "<c-w><c-l>")
+set("n", "<c-h>", "<c-w><c-h>")
+-- Resize windows
+set("n", "<M-,>", "<c-w>5<")
+set("n", "<M-.>", "<c-w>5>")
+set("n", "<M-t>", "<c-W>+")
+set("n", "<M-s>", "<c-W>-")
+
+
+
+-- barbar keymaps
+--
 -- Move to previous/next
-map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', opts)
-map('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
+-- map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', opts)
+-- map('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
 -- Re-order to previous/next
 map('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', opts)
 map('n', '<A->>', '<Cmd>BufferMoveNext<CR>', opts)
@@ -40,7 +57,7 @@ map('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
 --                 :BufferCloseBuffersLeft
 --                 :BufferCloseBuffersRight
 -- Magic buffer-picking mode
-map('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
+--map('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
 -- Sort automatically by...
 map('n', '<leader>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
 map('n', '<leader>bn', '<Cmd>BufferOrderByName<CR>', opts)

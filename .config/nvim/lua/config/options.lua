@@ -34,5 +34,8 @@ vim.opt.termguicolors = true
 -- Make sure to set `mapleader` before lazy so your mappings are correct
 vim.g.mapleader       = " " 
 
+-- reserve space for signs in the gutter
+vim.opt.signcolumn = 'yes'
+
 -- block cursor
 vim.opt["guicursor"] = ""
