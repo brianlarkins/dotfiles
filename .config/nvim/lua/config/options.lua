@@ -13,8 +13,23 @@ vim.opt.expandtab     = true
 vim.opt.tabstop       = 2
 vim.opt.shiftwidth    = 2
 
--- sync nvim / systemt clipboard
-vim.opt.clipboard     = "unnamedplus"
+-- sync nvim / system clipboard
+if os.getenv("SSH_CONNECTION") == nil
+  then
+    vim.opt.clipboard     = "unnamedplus"
+  else
+    vim.g.clipboard = {
+      name = 'OSC 52',
+      copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      },
+      paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      },
+    }
+  end
 
 -- keep screen centered
 --vim.opt.scrolloff     = 999
