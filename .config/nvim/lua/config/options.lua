@@ -19,6 +19,9 @@ vim.opt.clipboard     = "unnamedplus"
 -- keep screen centered
 --vim.opt.scrolloff     = 999
 
+vim.opt.backup    = true
+vim.opt.backupdir = "./.backup,~/.backup,.,/tmp"
+
 -- allow ragged edges for visual block mode
 vim.opt.virtualedit   = "block"
 
