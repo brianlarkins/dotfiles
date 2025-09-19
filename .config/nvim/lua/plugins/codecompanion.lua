@@ -9,7 +9,7 @@ return {
         anthropic = function()
           return require("codecompanion.adapters").extend("anthropic", {
             env = {
-              api_key = "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"
+              api_key = "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"
             },
           })
         end,
