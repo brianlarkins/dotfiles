@@ -5,7 +5,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
   },
   opts = {
-      adapters = {
+    adapters = {
+      http = {
         anthropic = function()
           return require("codecompanion.adapters").extend("anthropic", {
             env = {
@@ -14,10 +15,11 @@ return {
           })
         end,
       },
-      strategies = {
-        chat = {
-          adapter = "anthropic",
-        }
+    },
+    strategies = {
+      chat = {
+        adapter = "anthropic",
       }
     }
+  }
 }
