@@ -27,14 +27,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require('lspconfig').clangd.setup({})
+--require('lspconfig').clangd.setup({})
+vim.lsp.enable('clangd')
 
 require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = { "clangd", "lua_ls" },
   handlers = {
     function(server_name)
-      require('lspconfig')[server_name].setup({})
+      --require('lspconfig')[server_name].setup({})
+      vim.lsp.enable(server_name)
     end,
   }
 })
