@@ -94,6 +94,9 @@ unalias rm
 alias vi='nvim'
 alias gconfig='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
+# need to use zsh glob options to disable approximate matching for this alias
+alias ct='rm -f *~(N) *.aux(N) *.fdb_latexmk(N) *.fls(N) *.synctex.gz(N) *.log(N) *.out(N) *.toc(N)' 
+
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
