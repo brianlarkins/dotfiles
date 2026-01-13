@@ -112,7 +112,7 @@ if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
   PATH=/opt/homebrew/opt/ruby/bin:$PATH
 fi
 
-PATH=$PATH:$HOME/bin:$HOME/opt/bin:/usr/local/smlnj/bin:$HOME/Library/Python/3.9/bin:.
+PATH=$PATH:$HOME/bin:$HOME/opt/bin:$HOME/.local/bin:/usr/local/smlnj/bin:$HOME/Library/Python/3.9/bin:.
 PATH=/opt/homebrew/opt/openjdk/bin:$PATH
 
 

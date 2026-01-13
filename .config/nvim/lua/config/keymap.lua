@@ -21,6 +21,9 @@ set("n", "<M-t>", "<c-W>+")
 set("n", "<M-s>", "<c-W>-")
 
 
+-- turn off highlighting
+map("n", "<esc><esc>", ":noh<cr>", opts)
+
 
 -- barbar keymaps
 --
