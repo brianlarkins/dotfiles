@@ -22,6 +22,9 @@ set("n", "<M-s>", "<c-W>-")
 
 set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
 
+-- turn off highlighting
+map("n", "<esc><esc>", ":noh<cr>", opts)
+
 
 -- barbar keymaps
 --
