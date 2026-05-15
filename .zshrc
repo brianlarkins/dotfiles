@@ -112,17 +112,8 @@ if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
   PATH=/opt/homebrew/opt/ruby/bin:$PATH
 fi
 
-PATH=$PATH:$HOME/bin:$HOME/opt/bin:/usr/local/smlnj/bin:$HOME/Library/Python/3.9/bin:.
+PATH=$PATH:$HOME/bin:$HOME/opt/bin:$HOME/.local/bin:/usr/local/smlnj/bin:$HOME/Library/Python/3.9/bin:.
 PATH=/opt/homebrew/opt/openjdk/bin:$PATH
-
-
-
-
-
-
-
-
-
 
 # added by compiler tools installer
 COMP362TOOLS="$HOME/teaching/compilers/grading/sp24/comp362-sp24-lab3-submissions/comp362-tools"

@@ -1,76 +1,111 @@
+-- Treesitter -- native (Neovim 0.12) setup.
+--
+-- Neovim 0.12 provides treesitter highlighting, folding and incremental
+-- selection in core, so nvim-treesitter no longer needs to drive any of
+-- that. It is kept ONLY as a parser/query installer, which is what its
+-- `main` branch does -- the old `master`-branch `nvim-treesitter.configs`
+-- module system is gone.
+
 return {
-  -- treesitter for syntax highlighting
+  -- Parser / query installer for Neovim's native treesitter.
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate",
     config = function()
-      require'nvim-treesitter.configs'.setup {
-        -- A list of parser names, or "all" (the five listed parsers should always be installed)
-        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "cmake", "bash", "cuda",
-        "bibtex", "go", "html", "java", "json", "latex", "passwd", "markdown", "python", "rust",
-        "ssh_config", "strace", "tiger", "verilog", },
+      local TS = require("nvim-treesitter")
+      TS.setup()
 
-        auto_install = true,
-
-        highlight = {
-          enable = true,
-        },
-
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<Leader>ss",
-            node_incremental = "<Leader>si",
-            scope_incremental = "<Leader>sc",
-            node_decremental = "<Leader>sd",
-          },
-        },
-
-        textobjects = {
-          select = {
-            enable = true,
-
-            -- Automatically jump forward to textobj, similar to targets.vim
-            lookahead = true,
-
-            keymaps = {
-              -- You can use the capture groups defined in textobjects.scm
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["ac"] = "@class.outer",
-              -- You can optionally set descriptions to the mappings (used in the desc parameter of
-              -- nvim_buf_set_keymap) which plugins like which-key display
-              ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-              -- You can also use captures from other query groups like `locals.scm`
-              ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-            },
-            -- You can choose the select mode (default is charwise 'v')
-            --
-            -- Can also be a function which gets passed a table with the keys
-            -- * query_string: eg '@function.inner'
-            -- * method: eg 'v' or 'o'
-            -- and should return the mode ('v', 'V', or '<c-v>') or a table
-            -- mapping query_strings to modes.
-            selection_modes = {
-              ['@parameter.outer'] = 'v', -- charwise
-              ['@function.outer'] = 'V', -- linewise
-              ['@class.outer'] = '<c-v>', -- blockwise
-            },
-            -- If you set this to `true` (default is `false`) then any textobject is
-            -- extended to include preceding or succeeding whitespace. Succeeding
-            -- whitespace has priority in order to act similarly to eg the built-in
-            -- `ap`.
-            --
-            -- Can also be a function which gets passed a table with the keys
-            -- * query_string: eg '@function.inner'
-            -- * selection_mode: eg 'v'
-            -- and should return true of false
-            include_surrounding_whitespace = true,
-          }
-        },
+      -- Parsers to keep installed (the old `ensure_installed` list).
+      local ensure = {
+        "bash", "bibtex", "c", "cmake", "cuda", "go", "html", "java",
+        "json", "latex", "lua", "markdown", "markdown_inline", "passwd",
+        "python", "query", "rust", "ssh_config", "strace", "tiger",
+        "verilog", "vim", "vimdoc",
       }
+      local available = TS.get_available()
+      TS.install(vim.tbl_filter(function(lang)
+        return vim.list_contains(available, lang)
+      end, ensure))
+
+      -- Turn on native highlighting for a buffer, installing the parser on
+      -- demand if it is missing (the old `auto_install = true`).
+      local function enable(buf, filetype)
+        local lang = vim.treesitter.language.get_lang(filetype) or filetype
+        local ok, loaded = pcall(vim.treesitter.language.add, lang)
+        if ok and loaded then
+          vim.treesitter.start(buf, lang)
+        elseif vim.list_contains(available, lang) then
+          TS.install({ lang }):await(function()
+            if vim.api.nvim_buf_is_valid(buf) then
+              vim.treesitter.start(buf, lang)
+            end
+          end)
+        end
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("user_treesitter", { clear = true }),
+        callback = function(ev)
+          enable(ev.buf, ev.match)
+        end,
+      })
+
+      -- Buffers opened before this plugin finished loading miss the
+      -- FileType event above, so enable them explicitly.
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].filetype ~= "" then
+          enable(buf, vim.bo[buf].filetype)
+        end
+      end
+
+      -- Incremental selection
+      -- ----------------------------------------------------------------
+      -- This is now native (Neovim 0.12), available in visual mode:
+      --   an  grow to parent node    (:h v_an)
+      --   in  shrink to child node   (:h v_in)
+      --   ]n  select next node       (:h v_]n)
+      --   [n  select previous node   (:h v_[n)
+      -- Your old setup mapped <Leader>ss/si/sc/sd through the (removed)
+      -- nvim-treesitter `incremental_selection` module.
     end,
   },
+
+  -- Treesitter text objects (af / if / ac / ic / as).
+  -- The `main` branch works directly with Neovim's native treesitter.
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    lazy = false,
+    config = function()
+      require("nvim-treesitter-textobjects").setup({
+        select = {
+          -- Automatically jump forward to textobj, similar to targets.vim
+          lookahead = true,
+          -- Charwise 'v', linewise 'V', or blockwise '<c-v>' per capture.
+          selection_modes = {
+            ["@parameter.outer"] = "v",
+            ["@function.outer"] = "V",
+            ["@class.outer"] = "<c-v>",
+          },
+          -- Extend a textobject to include surrounding whitespace.
+          include_surrounding_whitespace = true,
+        },
+      })
+
+      -- In `main`, the keymaps are defined by you, not the plugin.
+      local select = require("nvim-treesitter-textobjects.select").select_textobject
+      local function map(key, capture, group, desc)
+        vim.keymap.set({ "x", "o" }, key, function()
+          select(capture, group)
+        end, { desc = desc })
+      end
+      map("af", "@function.outer", "textobjects", "Select outer function")
+      map("if", "@function.inner", "textobjects", "Select inner function")
+      map("ac", "@class.outer", "textobjects", "Select outer class")
+      map("ic", "@class.inner", "textobjects", "Select inner part of a class region")
+      map("as", "@local.scope", "locals", "Select language scope")
+    end,
   },
 }

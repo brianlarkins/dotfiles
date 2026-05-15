@@ -20,6 +20,7 @@ set("n", "<M-.>", "<c-w>5>")
 set("n", "<M-t>", "<c-W>+")
 set("n", "<M-s>", "<c-W>-")
 
+set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
 
 
 -- barbar keymaps
