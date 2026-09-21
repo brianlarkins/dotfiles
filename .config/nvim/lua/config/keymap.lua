@@ -1,56 +1,56 @@
 local builtin = require('telescope.builtin')
 
 local set = vim.keymap.set
-local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
-set('n', '<leader>ff', builtin.find_files, {})
-set('n', '<leader>fg', builtin.live_grep, {})
-set('n', '<leader>fb', builtin.buffers, {})
-set('n', '<leader>fh', builtin.help_tags, {})
+-- telescope
+set('n', '<leader>ff', builtin.find_files, opts)
+set('n', '<leader>fg', builtin.live_grep, opts)
+set('n', '<leader>fb', builtin.buffers, opts)
+set('n', '<leader>fh', builtin.help_tags, opts)
 
 -- Move between windows
-set("n", "<c-j>", "<c-w><c-j>")
-set("n", "<c-k>", "<c-w><c-k>")
-set("n", "<c-l>", "<c-w><c-l>")
-set("n", "<c-h>", "<c-w><c-h>")
--- Resize windows
-set("n", "<M-,>", "<c-w>5<")
-set("n", "<M-.>", "<c-w>5>")
-set("n", "<M-t>", "<c-W>+")
-set("n", "<M-s>", "<c-W>-")
+set('n', '<c-j>', '<c-w><c-j>', opts)
+set('n', '<c-k>', '<c-w><c-k>', opts)
+set('n', '<c-l>', '<c-w><c-l>', opts)
+set('n', '<c-h>', '<c-w><c-h>', opts)
 
+-- Resize windows
+set('n', '<M-,>', '<c-w>5<', opts)
+set('n', '<M-.>', '<c-w>5>', opts)
+set('n', '<M-t>', '<c-w>+', opts)
+set('n', '<M-s>', '<c-w>-', opts)
 
 -- turn off highlighting
-map("n", "<esc><esc>", ":noh<cr>", opts)
+set('n', '<esc><esc>', '<cmd>noh<cr>', opts)
 
 
 -- barbar keymaps
 --
 -- Move to previous/next
--- map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', opts)
--- map('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
+-- set('n', '<A-,>', '<cmd>BufferPrevious<cr>', opts)
+-- set('n', '<A-.>', '<cmd>BufferNext<cr>', opts)
 -- Re-order to previous/next
-map('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', opts)
-map('n', '<A->>', '<Cmd>BufferMoveNext<CR>', opts)
+set('n', '<A-<>', '<cmd>BufferMovePrevious<cr>', opts)
+set('n', '<A->>', '<cmd>BufferMoveNext<cr>', opts)
 -- Goto buffer in position...
-map('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', opts)
-map('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
-map('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
-map('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
-map('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', opts)
-map('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', opts)
-map('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', opts)
-map('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
-map('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
-map('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
+set('n', '<A-1>', '<cmd>BufferGoto 1<cr>', opts)
+set('n', '<A-2>', '<cmd>BufferGoto 2<cr>', opts)
+set('n', '<A-3>', '<cmd>BufferGoto 3<cr>', opts)
+set('n', '<A-4>', '<cmd>BufferGoto 4<cr>', opts)
+set('n', '<A-5>', '<cmd>BufferGoto 5<cr>', opts)
+set('n', '<A-6>', '<cmd>BufferGoto 6<cr>', opts)
+set('n', '<A-7>', '<cmd>BufferGoto 7<cr>', opts)
+set('n', '<A-8>', '<cmd>BufferGoto 8<cr>', opts)
+set('n', '<A-9>', '<cmd>BufferGoto 9<cr>', opts)
+set('n', '<A-0>', '<cmd>BufferLast<cr>', opts)
 -- Pin/unpin buffer
-map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
+set('n', '<A-p>', '<cmd>BufferPin<cr>', opts)
 -- Goto pinned/unpinned buffer
 --                 :BufferGotoPinned
 --                 :BufferGotoUnpinned
 -- Close buffer
-map('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
+set('n', '<A-c>', '<cmd>BufferClose<cr>', opts)
 -- Wipeout buffer
 --                 :BufferWipeout
 -- Close commands
@@ -60,10 +60,10 @@ map('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
 --                 :BufferCloseBuffersLeft
 --                 :BufferCloseBuffersRight
 -- Magic buffer-picking mode
---map('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
+-- set('n', '<C-p>', '<cmd>BufferPick<cr>', opts)
 -- Sort automatically by...
-map('n', '<leader>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
-map('n', '<leader>bn', '<Cmd>BufferOrderByName<CR>', opts)
-map('n', '<leader>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
-map('n', '<leader>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
-map('n', '<leader>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
+set('n', '<leader>bb', '<cmd>BufferOrderByBufferNumber<cr>', opts)
+set('n', '<leader>bn', '<cmd>BufferOrderByName<cr>', opts)
+set('n', '<leader>bd', '<cmd>BufferOrderByDirectory<cr>', opts)
+set('n', '<leader>bl', '<cmd>BufferOrderByLanguage<cr>', opts)
+set('n', '<leader>bw', '<cmd>BufferOrderByWindowNumber<cr>', opts)
