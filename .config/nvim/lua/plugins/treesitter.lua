@@ -22,7 +22,8 @@ return {
         "bash", "bibtex", "c", "cmake", "cuda", "go", "html", "java",
         "json", "latex", "lua", "markdown", "markdown_inline", "passwd",
         "python", "query", "rust", "ssh_config", "strace", "tiger",
-        "verilog", "vim", "vimdoc",
+        -- `verilog` was renamed upstream; Neovim maps ft=verilog to this lang
+        "systemverilog", "vim", "vimdoc",
       }
       local available = TS.get_available()
       TS.install(vim.tbl_filter(function(lang)
