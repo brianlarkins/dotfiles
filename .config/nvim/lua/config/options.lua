@@ -14,22 +14,33 @@ vim.opt.tabstop       = 2
 vim.opt.shiftwidth    = 2
 
 -- sync nvim / system clipboard
-if os.getenv("SSH_CONNECTION") == nil
-  then
-    vim.opt.clipboard     = "unnamedplus"
+local function use_osc52()
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+    },
+  }
+end
+
+if os.getenv("SSH_CONNECTION") ~= nil then
+  use_osc52()
+else
+  local has_provider = vim.fn.executable('pbcopy') == 1   -- macOS
+    or vim.fn.executable('wl-copy') == 1                  -- Wayland
+    or vim.fn.executable('xclip') == 1                    -- X11
+    or vim.fn.executable('xsel') == 1                     -- X11 alt
+  if has_provider then
+    vim.opt.clipboard = "unnamedplus"
   else
-    vim.g.clipboard = {
-      name = 'OSC 52',
-      copy = {
-        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-      },
-      paste = {
-        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-      },
-    }
+    use_osc52()
   end
+end
 
 -- keep screen centered
 --vim.opt.scrolloff     = 999

@@ -20,6 +20,7 @@ set('n', '<M-,>', '<c-w>5<', opts)
 set('n', '<M-.>', '<c-w>5>', opts)
 set('n', '<M-t>', '<c-w>+', opts)
 set('n', '<M-s>', '<c-w>-', opts)
+set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
 
 -- turn off highlighting
 set('n', '<esc><esc>', '<cmd>noh<cr>', opts)
