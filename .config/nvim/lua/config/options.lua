@@ -45,8 +45,11 @@ end
 -- keep screen centered
 --vim.opt.scrolloff     = 999
 
-vim.opt.backup    = true
-vim.opt.backupdir = "./.backup,~/.backup,.,/tmp"
+-- don't leave `file~` backups lying around after a write. `writebackup` stays
+-- on (its copy is transient and removed once the write succeeds), so a failed
+-- write still can't destroy the original; backupdir only holds that temp copy.
+vim.opt.backup    = false
+vim.opt.backupdir = "~/.backup,/tmp"
 
 -- allow ragged edges for visual block mode
 vim.opt.virtualedit   = "block"
