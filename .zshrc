@@ -92,7 +92,28 @@ unalias cp
 unalias rm
 
 alias vi='nvim'
-alias gconfig='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+# Dotfiles bare repo. A function rather than an alias so that zsh completion
+# can be pointed at the right repo explicitly (see _gconfig below), and so it
+# also works in scripts and subshells, where aliases are not expanded.
+gconfig() {
+  git --git-dir="$HOME/.cfg" --work-tree="$HOME" "$@"
+}
+# Complete gconfig exactly like git, but resolve refs and paths against the
+# dotfiles repo. `local -x` scopes these to this one completion call, so plain
+# `git` in every other repo is unaffected.
+#
+# This is needed because _git only parameter-expands --git-dir via ${~...},
+# which does globbing, not parameter expansion -- so a $HOME in an alias
+# reaches it as a literal string and every lookup fails silently.
+_gconfig() {
+  local -x GIT_DIR="$HOME/.cfg" GIT_WORK_TREE="$HOME"
+  # _git dispatches on $service: if it isn't exactly "git" it falls through to
+  # `_call_function ret _$service`, which calls this function again and blows
+  # the FUNCNEST limit. Setting it here selects _git's real git branch.
+  local service=git
+  _git
+}
+compdef _gconfig gconfig
 
 # need to use zsh glob options to disable approximate matching for this alias
 alias ct='rm -f *~(N) *.aux(N) *.fdb_latexmk(N) *.fls(N) *.synctex.gz(N) *.log(N) *.out(N) *.toc(N)' 
