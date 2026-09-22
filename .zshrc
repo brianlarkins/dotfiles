@@ -70,7 +70,8 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(rust colorize colored-man-pages command-not-found common-aliases git gh tmux iterm2)
+plugins=(aliases colorize colored-man-pages command-not-found common-aliases 
+  copyfile copypath git gh tmux iterm2)
 
 zstyle :omz:plugins:iterm2 shell-integration yes
 
