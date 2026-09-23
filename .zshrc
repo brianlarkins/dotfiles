@@ -147,3 +147,30 @@ export COMP362TOOLS COMP362LAB PATH CLASSPATH
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+
+# eachdir PATTERN COMMAND...
+# Run COMMAND inside every directory matching PATTERN, with a banner for each.
+# The pattern needs no quoting: the alias turns off globbing at the prompt, and
+# the function expands the pattern itself.  Globs in COMMAND (e.g. *.c) are
+# expanded inside each directory.  Quote the command if it has ; | && or >.
+#   eachdir hw1-* make clean
+#   eachdir hw1-* ls *.c
+#   eachdir hw1-* 'make && ./test > out.txt'
+eachdir() {
+  if (( $# < 2 )); then
+    print -u2 "usage: eachdir PATTERN COMMAND..."
+    return 1
+  fi
+  local pat=$1 d
+  shift
+  local -a dirs=( ${~pat}(N/) )
+  if (( ! $#dirs )); then
+    print -u2 "eachdir: no directories match $pat"
+    return 1
+  fi
+  for d in $dirs; do
+    print "**** $d ****"
+    ( cd -- $d && eval "$@" )
+  done
+}
+alias eachdir='noglob eachdir'
