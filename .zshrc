@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/brian/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -70,10 +70,17 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aliases colorize colored-man-pages command-not-found common-aliases 
-  copyfile copypath git gh tmux iterm2)
-
-zstyle :omz:plugins:iterm2 shell-integration yes
+plugins=(aliases colorize colored-man-pages command-not-found common-aliases
+  copyfile copypath git)
+# This file is shared by macOS laptops, Linux servers, and an HPC cluster whose
+# compute nodes share $HOME, so only load plugins whose tools exist here.
+(( $+commands[gh] ))   && plugins+=(gh)
+(( $+commands[tmux] )) && plugins+=(tmux)
+(( $+commands[cargo] || $+commands[rustup] )) && plugins+=(rust)
+if [[ $OSTYPE == darwin* ]]; then
+  plugins+=(iterm2)
+  zstyle :omz:plugins:iterm2 shell-integration yes
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -92,7 +99,9 @@ bindkey '^[^M' self-insert-unmeta
 unalias cp
 unalias rm
 
-alias vi='nvim'
+if (( $+commands[nvim] )); then
+  alias vi='nvim'
+fi
 # Dotfiles bare repo. A function rather than an alias so that zsh completion
 # can be pointed at the right repo explicitly (see _gconfig below), and so it
 # also works in scripts and subshells, where aliases are not expanded.
@@ -117,7 +126,17 @@ _gconfig() {
 compdef _gconfig gconfig
 
 # need to use zsh glob options to disable approximate matching for this alias
-alias ct='rm -f *~(N) *.aux(N) *.fdb_latexmk(N) *.fls(N) *.synctex.gz(N) *.log(N) *.out(N) *.toc(N)' 
+alias ct='rm -f *~(N) *.aux(N) *.fdb_latexmk(N) *.fls(N) *.synctex.gz(N) *.log(N) *.out(N) *.toc(N)'
+alias clean='ct'
+
+# SLURM / Lmod (HPC cluster)
+if (( $+commands[squeue] )); then
+  alias sq='squeue'
+  alias squ='squeue -u $USER'
+fi
+if [[ -n $LMOD_CMD ]]; then
+  export LMOD_COLORIZE=YES
+fi
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -130,22 +149,32 @@ fi
 
 #export FCEDIT='emacs'
 
-if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
-  PATH=/opt/homebrew/opt/ruby/bin:$PATH
-fi
-
-PATH=$PATH:$HOME/bin:$HOME/opt/bin:$HOME/.local/bin:/usr/local/smlnj/bin:$HOME/Library/Python/3.9/bin:.
-PATH=/opt/homebrew/opt/openjdk/bin:$PATH
+# (N-/) drops any directory that doesn't exist on this machine, and -U keeps
+# nested shells (tmux, srun --pty) from piling up duplicates.
+typeset -U path
+path=(/opt/homebrew/opt/openjdk/bin(N-/) /opt/homebrew/opt/ruby/bin(N-/) $path)
+path+=($HOME/bin(N-/) $HOME/opt/bin(N-/) $HOME/.local/bin(N-/)
+  /usr/local/smlnj/bin(N-/) $HOME/Library/Python/3.9/bin(N-/) .)
 
 # added by compiler tools installer
 COMP362TOOLS="$HOME/teaching/compilers/grading/sp24/comp362-sp24-lab3-submissions/comp362-tools"
-COMP362LAB=lab6
-PATH=$PATH:$COMP362TOOLS/bin
-CLASSPATH=.:..:$COMP362TOOLS/../comp362-$COMP362LAB:$COMP362TOOLS/classes/jlex.jar:$COMP362TOOLS/classes/java_cup.jar:$COMP362TOOLS/classes/$COMP362LAB.jar
-export COMP362TOOLS COMP362LAB PATH CLASSPATH
+if [[ -d $COMP362TOOLS ]]; then
+  COMP362LAB=lab6
+  PATH=$PATH:$COMP362TOOLS/bin
+  CLASSPATH=.:..:$COMP362TOOLS/../comp362-$COMP362LAB:$COMP362TOOLS/classes/jlex.jar:$COMP362TOOLS/classes/java_cup.jar:$COMP362TOOLS/classes/$COMP362LAB.jar
+  export COMP362TOOLS COMP362LAB PATH CLASSPATH
+else
+  unset COMP362TOOLS
+fi
 # end compilers additions
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+if [[ -s $HOME/.nvm/nvm.sh ]]; then
+  export NVM_DIR="$HOME/.nvm"
+  source "$NVM_DIR/nvm.sh"
+  [[ -s $NVM_DIR/bash_completion ]] && source "$NVM_DIR/bash_completion"
+fi
 
 
 # eachdir PATTERN COMMAND...
@@ -174,3 +203,8 @@ eachdir() {
   done
 }
 alias eachdir='noglob eachdir'
+
+# Machine-specific settings that don't belong in the shared repo.
+if [[ -r $HOME/.zshrc.local ]]; then
+  source "$HOME/.zshrc.local"
+fi
