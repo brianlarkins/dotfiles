@@ -168,6 +168,14 @@ else
 fi
 # end compilers additions
 
+# Ansible vault and Intel Quartus, only where they are set up
+if [[ -r $HOME/ansible/.vault_pass ]]; then
+  export ANSIBLE_VAULT_PASSWORD_FILE="$HOME/ansible/.vault_pass"
+fi
+if [[ -d /opt/intelFPGA_lite/21.1/quartus/sopc_builder/bin ]]; then
+  export QSYS_ROOTDIR="/opt/intelFPGA_lite/21.1/quartus/sopc_builder/bin"
+fi
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 if [[ -s $HOME/.nvm/nvm.sh ]]; then
