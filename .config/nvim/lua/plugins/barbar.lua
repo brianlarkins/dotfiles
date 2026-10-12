@@ -12,6 +12,7 @@ return {
       -- insert_at_start = true,
       -- …etc.
     },
-    version = '^1.0.0', -- optional: only update when a new 1.x version is released
+    -- track master: the Neovim 0.13 fix (no BufModifiedSet) isn't in a tagged release yet (latest is v1.9.1)
+    -- version = '^1.0.0',
   },
 }
