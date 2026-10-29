@@ -184,6 +184,9 @@ if [[ -s $HOME/.nvm/nvm.sh ]]; then
   [[ -s $NVM_DIR/bash_completion ]] && source "$NVM_DIR/bash_completion"
 fi
 
+LABGEN_TERM=fa26
+LABGEN_REPOS=~/teaching/systems/grading/fa26
+export LABGEN_TERM LABGEN_REPOS
 
 # eachdir PATTERN COMMAND...
 # Run COMMAND inside every directory matching PATTERN, with a banner for each.
